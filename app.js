@@ -7,13 +7,16 @@ var pair = 'mona_jpy';
 var ms = new MarketStream(pair);
 ms.on("depth", function(now, old){
     broadcast('depth', now);
+    console.log(ms.lastUpdate());
     console.log(now);
 })
 ms.on("lastprice", function(now, old){
     broadcast('lastprice', now);
+    console.log(ms.lastUpdate());
     console.log(now);
 })
 ms.on("trades", function(now, old){
+    console.log(ms.lastUpdate());
     console.log(now.map(function(v){return [v.tid, v.price, v.amount]}));
     console.log(old.map(function(v){return [v.tid, v.price, v.amount]}));
 })
@@ -30,6 +33,8 @@ ms.start().then(function(){
         .listen(9999);
     var io = require('socket.io').listen(httpServer);
     io.sockets.on('connection', function (client) {
+        console.log('incomming client: ' + client.client.conn.remoteAddress);
+
         var id = ++uniqid;
         sockets[id] = client;
 
