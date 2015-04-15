@@ -33,7 +33,7 @@ ms.start().then(function(){
         .listen(9999);
     var io = require('socket.io').listen(httpServer);
     io.sockets.on('connection', function (client) {
-        console.log('incomming client: ' + client.client.conn.remoteAddress);
+        console.log('incoming client: ' + client.client.conn.remoteAddress);
 
         var id = ++uniqid;
         sockets[id] = client;
