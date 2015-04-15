@@ -1,9 +1,5 @@
 var connect = require('connect');
 var serveStatic = require('serve-static');
-var httpServer = connect()
-    .use(serveStatic(__dirname + '/webroot'))
-    .listen(9999);
-var io = require('socket.io').listen(httpServer);
 
 var MarketStream = require("zaif-market-stream").MarketStream;
 var pair = 'mona_jpy';
@@ -29,6 +25,10 @@ var broadcast = function(key, data){
     }
 };
 ms.start().then(function(){
+    var httpServer = connect()
+        .use(serveStatic(__dirname + '/webroot'))
+        .listen(9999);
+    var io = require('socket.io').listen(httpServer);
     io.sockets.on('connection', function (client) {
         var id = ++uniqid;
         sockets[id] = client;

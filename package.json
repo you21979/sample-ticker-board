@@ -8,6 +8,7 @@
   "dependencies": {
     "connect": "",
     "socket.io": "",
+    "serve-static":"",
     "zaif-market-stream": ""
   }
 }
