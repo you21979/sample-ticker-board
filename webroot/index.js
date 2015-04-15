@@ -8,25 +8,53 @@ function connect(){
 }
 connect();
 
-var update = function(key, value){
-    var idlist = [];
-    for(var p in value){
-        idlist.push(p);
-    }
-    idlist.sort();
+var update_lastprice = function(key, value){
     var elem = doc.getElementById(key);
-    var text = '<table class="ticker">';
-    text = text + '<th colspan=3>' + key + '</th>';
-    idlist.forEach(function(p){
-        var date = new Date( value[p].time * 1000 );
-        var updated = [date.getFullYear(), date.getMonth()+1, date.getDate()].join( '/' ) + ' ' + date.toLocaleTimeString();
-        text = text + '<tr>';
-        text = text + '<td>' + p + '</td>';
-        text = text + '<td>' + value[p].tick + '</td>';
-        text = text + '<td>' + updated + '</td>';
-        text = text + '</tr>';
-    });
-    text = text + '</table>';
+    var text = [
+        '<table class="ticker">',
+        '<th colspan=1>lastprice</th>',
+        '<tr>',
+            '<td>', value['action'], '</td>',
+        '</tr>',
+        '<tr>',
+            '<td>', value['price'], '</td>',
+        '</tr>',
+        '</table>',
+    ].join('');
+    elem.innerHTML = text;
+}
+var update_depth = function(key, value){
+    var elem = doc.getElementById(key);
+    var ask = [
+            value['asks'].reverse().map(function(v){return [
+                '<tr>',
+                '<td>', v[0], '</td>','<td>', v[1], '</td><td> </td>',
+                '</tr>',
+                ''
+            ].join('')}).reduce(function(r, v){return r + v}, ""),
+        ''
+    ].join('');
+    var bid = [
+            value['bids'].map(function(v){return [
+                '<tr>',
+                '<td> </td><td>', v[1], '</td>','<td>', v[0], '</td>',
+                '</tr>',
+                ''
+            ].join('')}).reduce(function(r, v){return r + v}, ""),
+        ''
+    ].join('');
+
+    var text = [
+        '<table class="ticker">',
+        '<th colspan=1>depth</th>',
+        '<tr>',
+            '<table>',
+            ask,
+            bid,
+            '</table>',
+        '</tr>',
+        '</table>',
+    ].join('');
     elem.innerHTML = text;
 }
 // ----------------------------------------
@@ -39,7 +67,8 @@ var initialize = function(){
         });
         socket.on('message', function(data){
             var obj = JSON.parse(data);
-            update(obj.key, obj.data);
+            if(obj.key==="depth")update_depth(obj.key, obj.data);
+            if(obj.key==="lastprice")update_lastprice(obj.key, obj.data);
         });
     });
 };

@@ -8,6 +8,6 @@
   "dependencies": {
     "connect": "",
     "socket.io": "",
-    "redis": ""
+    "zaif-market-stream": ""
   }
 }
