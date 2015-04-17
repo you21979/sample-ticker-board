@@ -28,7 +28,7 @@ var update_depth = function(key, value){
     var ask = [
             value['asks'].reverse().map(function(v){return [
                 '<tr>',
-                '<td>', v[0], '</td>','<td>', v[1], '</td><td> </td>',
+                '<td>', v[1], '</td>','<td>', v[0], '</td><td> </td>',
                 '</tr>',
                 ''
             ].join('')}).reduce(function(r, v){return r + v}, ""),
@@ -37,7 +37,7 @@ var update_depth = function(key, value){
     var bid = [
             value['bids'].map(function(v){return [
                 '<tr>',
-                '<td> </td><td>', v[1], '</td>','<td>', v[0], '</td>',
+                '<td> </td><td>', v[0], '</td>','<td>', v[1], '</td>',
                 '</tr>',
                 ''
             ].join('')}).reduce(function(r, v){return r + v}, ""),
