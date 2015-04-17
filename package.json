@@ -9,6 +9,7 @@
     "connect": "",
     "socket.io": "",
     "serve-static":"",
+    "bluebird":"",
     "zaif-market-stream": ""
   }
 }
