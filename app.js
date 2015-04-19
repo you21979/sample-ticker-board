@@ -24,7 +24,7 @@ var broadcast = function(key, time, data){
 };
 ms.start().then(function(){
     ms.conn.debuglog = function(x){
-        console.log([].concat([moment().format('YYYY/MM/DD HH:mm:ss')], x))
+        console.log([].concat([moment().format('YYYY/MM/DD HH:mm:ss')], x).join(','))
     };
     var httpServer = connect()
         .use(serveStatic(__dirname + '/webroot'))

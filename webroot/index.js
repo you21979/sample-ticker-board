@@ -11,20 +11,9 @@ var update_time = function(time){
     var elem = doc.getElementById('time');
     elem.innerHTML = time;
 }
-var update_lastprice = function(key, value){
-    var elem = doc.getElementById(key);
-    var text = [
-        '<table class="ticker">',
-        '<th colspan=1>lastprice</th>',
-        '<tr>',
-            '<td>', value['action'], '</td>',
-        '</tr>',
-        '<tr>',
-            '<td>', value['price'], '</td>',
-        '</tr>',
-        '</table>',
-    ].join('');
-    elem.innerHTML = text;
+var update_lastprice = function(value){
+    doc.getElementById('price').innerHTML = value['price'];
+    doc.getElementById('action').innerHTML = value['action'] === 'ask' ? 'sell' : 'buy';
 }
 var update_depth = function(key, value){
     var elem = doc.getElementById(key);
@@ -72,7 +61,7 @@ var initialize = function(){
             var obj = JSON.parse(data);
             update_time(obj.lastupdate);
             if(obj.key==="depth")update_depth(obj.key, obj.data);
-            if(obj.key==="lastprice")update_lastprice(obj.key, obj.data);
+            if(obj.key==="lastprice")update_lastprice(obj.data);
         });
     });
 };
