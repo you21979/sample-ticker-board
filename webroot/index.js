@@ -1,13 +1,16 @@
 var URL = window.URL || window.webkitURL;
 var doc = document;
-var socket = null;
 
-function connect(){
+var connect = function(){
 //    socket = new WebSocket('ws://' + location.host);
-    socket = new io.connect('http://' + location.host);
+    return new io.connect('http://' + location.host);
 }
-connect();
+var socket = connect();
 
+var update_time = function(time){
+    var elem = doc.getElementById('time');
+    elem.innerHTML = time;
+}
 var update_lastprice = function(key, value){
     var elem = doc.getElementById(key);
     var text = [
@@ -67,6 +70,7 @@ var initialize = function(){
         });
         socket.on('message', function(data){
             var obj = JSON.parse(data);
+            update_time(obj.lastupdate);
             if(obj.key==="depth")update_depth(obj.key, obj.data);
             if(obj.key==="lastprice")update_lastprice(obj.key, obj.data);
         });
